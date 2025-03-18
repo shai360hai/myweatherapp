@@ -40,32 +40,105 @@ class WeatherApp(QWidget):
         self.emoji_label.setObjectName("emoji_label")
         self.description_label.setObjectName("description_label")
         
+        # self.setStyleSheet("""
+        #                    Qlabel, QpushButton{
+        #                        font-size: 20px;
+        #                        font-family: Arial;
+        #                        font-style: bold;
+        #                    }
+        #                    #city_label{
+        #                        margin-top: 20px;
+        #                    }
+        #                    #city_input{
+        #                        margin-top: 10px;
+        #                    }
+        #                    #get_weather_btn{
+        #                        margin-top: 20px;
+        #                    }
+        #                    #temp_label{
+        #                        margin-top: 20px;
+        #                    }
+        #                    #emoji_label{
+        #                        font-family: Segoe UI Emoji;
+        #                        margin-top: 10px;
+        #                    }
+        #                    #description_label{
+        #                        margin-top: 10px;
+        #                    }    
+        #                    """)
         self.setStyleSheet("""
-                           Qlabel, QpushButton{
-                               font-size: 20px;
-                               font-family: Arial;
-                               font-style: bold;
-                           }
-                           #city_label{
-                               margin-top: 20px;
-                           }
-                           #city_input{
-                               margin-top: 10px;
-                           }
-                           #get_weather_btn{
-                               margin-top: 20px;
-                           }
-                           #temp_label{
-                               margin-top: 20px;
-                           }
-                           #emoji_label{
-                               font-family: Segoe UI Emoji;
-                               margin-top: 10px;
-                           }
-                           #description_label{
-                               margin-top: 10px;
-                           }    
-                           """)
+    QWidget {
+        background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                                    stop:0 #6dd5ed, stop:1 #2193b0);
+    }
+    
+    QLabel, QPushButton {
+        font-size: 20px;
+        font-family: Arial;
+        font-weight: bold;
+        color: white;
+    }
+
+    QLineEdit {
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 2px solid white;
+        border-radius: 10px;
+        padding: 8px;
+        font-size: 18px;
+        color: white;
+    }
+
+    QPushButton {
+        background-color: #ff7e5f;
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 18px;
+    }
+    
+    QPushButton:hover {
+        background-color: #feb47b;
+    }
+
+    #city_label {
+        margin-top: 20px;
+        font-size: 22px;
+    }
+
+    #city_input {
+        margin-top: 10px;
+    }
+
+    #get_weather_btn {
+        margin-top: 20px;
+        background-color: #ff7e5f;
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 18px;
+        color: white;
+    }
+
+    #get_weather_btn:hover {
+        background-color: #feb47b;
+    }
+
+    #temp_label {
+        margin-top: 20px;
+        font-size: 24px;
+    }
+
+    #emoji_label {
+        font-family: "Segoe UI Emoji";
+        font-size: 40px;
+        margin-top: 10px;
+    }
+
+    #description_label {
+        margin-top: 10px;
+        font-size: 18px;
+    }
+""")
+
         self.get_weather_btn.clicked.connect(self.get_weather)
     
     def get_weather(self):
@@ -116,10 +189,36 @@ class WeatherApp(QWidget):
     def display_error(self, message):
         self.temp_label.setStyleSheet("font-size: 30px; color: red;")
         self.temp_label.setText(message)
+        self.emoji_label.clear()
+        self.description_label.clear()
     
     def display_weather(self, data):
-        print(data)
-    
+        temp = data["main"]["temp"]
+        self.temp_label.setText(f"{temp}°C")
+        # self.emoji_label.setText(self.get_emoji(temp))
+        # print(data)
+        weather_description = data["weather"][0]["description"]
+        self.description_label.setText(weather_description)
+        weather_id = data["weather"][0]["id"] 
+        self.emoji_label.setText(self.get_emoji(weather_id))
+    @staticmethod    
+    def get_emoji(weather_id):
+        
+        if weather_id >= 200 and weather_id <= 232:
+            return "☔"
+        elif weather_id >= 300 and weather_id <= 321:
+            return "🌧"
+        elif weather_id >= 500 and weather_id <= 531:
+            return "🌧"
+        elif weather_id >= 600 and weather_id <= 622:
+            return "🌨"
+        elif weather_id >= 701 and weather_id <= 781:
+            return "🌫"
+        elif weather_id == 800:
+            return "☀"
+        elif weather_id >= 801 and weather_id <= 804:
+            return "🌤"
+        
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     weather_app = WeatherApp()
