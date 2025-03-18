@@ -37,9 +37,6 @@ This Weather App is a simple and elegant application built using PyQt that allow
    API_KEY = "your_api_key_here"
    ```
 
-## 📜 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 🤝 Contributing
 Feel free to contribute by creating pull requests or opening issues!
 
